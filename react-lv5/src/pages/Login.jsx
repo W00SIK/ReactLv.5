@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useInput } from '../hooks/useInput'
 import { login } from '../apis/auth'
 
@@ -12,9 +12,11 @@ function Login() {
         id,
         password,
     }
+    const navigate = useNavigate()
 
     const onClickFormHandler = () => {
-        login(user)
+        login(user, navigate)
+        
     }
 
     return (

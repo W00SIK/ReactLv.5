@@ -1,16 +1,17 @@
 import api from './api'
 
 // 로그인
-export const login = async (user) => {
-    
+export const login = async (user, navigate) => {
     console.log(user)
     console.log(user.id)
     console.log(user.password)
     try {
-        const response = await api.post(`login`, user)
+        const response = await api.post(`/login`, user)
+
         localStorage.setItem('accessToken', response.data.token)
-        localStorage.setItem('refreshToken', response.data.token)
+        // localStorage.setItem('refreshToken', response.data.token)
         console.log(response.data)
+        navigate("/")
     } catch (error) {
         console.log("Login failed:", error)
         alert("존재하지 않는 아이디 입니다.")
@@ -35,14 +36,8 @@ export const join = async (user) => {
     }
 
     try {
-        const accessToken = localStorage.getItem('accessToken')
-        const refreshToken = localStorage.getItem('refreshToken')
-        console.log(accessToken)
-        const response = await api.post(`register`, user, {
-            headers: {
-                Authorization: "Bearer " + accessToken
-            },
-        })
+
+        const response = await api.post(`/register`, user)
         console.log(response.data)
 
     } catch (error) {
