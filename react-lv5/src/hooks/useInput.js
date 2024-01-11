@@ -8,5 +8,9 @@ export const useInput = () => {
         setValue(e.target.value)
     }
 
-    return [value, handlerInput]
+    const handlerResetValue = () => {
+        setValue("")
+    }
+
+    return [value, handlerInput, handlerResetValue]
 }

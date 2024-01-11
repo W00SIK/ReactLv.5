@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import GlobalStyle from '../style/GlobalStyle'
 import TodoBox from '../components/TodoBox'
 import Header from '../components/Header'
-import { useState } from 'react'
-import { addBtn, deleteBtn, changeBtn } from '../redux/modules/hendlerReducer'
+import { changeBtn } from '../redux/modules/hendlerReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useInput } from '../hooks/useInput'
 
@@ -38,8 +37,8 @@ function Home() {
     })
 
     // 인풋 밸류 커스텀 훅
-    const [title, handlerTitleInput] = useInput()
-    const [contents, handlerContentsInput] = useInput()
+    const [title, handlerTitleInput, handlerResetTitle] = useInput()
+    const [contents, handlerContentsInput, handlerResetContents] = useInput()
 
 
     // isDone 상태 업데이트
@@ -48,21 +47,21 @@ function Home() {
     }
 
     // 추가 버튼
-    const hendlerAddButton = () => {
+    // const hendlerAddButton = () => {
 
-        const newUser = {
-            title,
-            contents,
-            isDone: false,
-        }
-        dispatch(addBtn(newUser))
-    }
+    //     const newUser = {
+    //         title,
+    //         contents,
+    //         isDone: false,
+    //     }
+    //     dispatch(addBtn(newUser))
+    // }
 
 
     // 삭제버튼
-    const hendlerRemoveButton = (id) => {
-        dispatch(deleteBtn(id))
-    }
+    // const hendlerRemoveButton = (id) => {
+    //     dispatch(deleteBtn(id))
+    // }
 
     return (
         <>
@@ -74,6 +73,8 @@ function Home() {
             <GlobalStyle />
 
             <Header
+                handlerResetContents={handlerResetContents}
+                handlerResetTitle={handlerResetTitle}
                 BoxHeader={BoxHeader}
                 FontH1={FontH1}
                 FontH2={FontH2}
@@ -83,7 +84,7 @@ function Home() {
                 HendlerAddButtonStyle={HendlerAddButtonStyle}
                 title={title}
                 contents={contents}
-                hendlerAddButton={hendlerAddButton}
+                // hendlerAddButton={hendlerAddButton}
                 handlerTitleInput={handlerTitleInput}
                 handlerContentsInput={handlerContentsInput}
             />
@@ -100,7 +101,7 @@ function Home() {
                 FontH2={FontH2}
                 BoxMainWarkingNameArea={BoxMainWarkingNameArea}
                 BoxMainWarkingName={BoxMainWarkingName}
-                hendlerRemoveButton={hendlerRemoveButton}
+                // hendlerRemoveButton={hendlerRemoveButton}
                 hendlerIsdoneState={hendlerIsdoneState}
                 navigate={navigate}
             />

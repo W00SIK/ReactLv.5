@@ -1,5 +1,5 @@
 import React from 'react'
-import { QueryClient, useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { addTodos } from '../apis/todos'
 function Header({
     BoxHeader,
@@ -11,7 +11,8 @@ function Header({
     HendlerAddButtonStyle,
     title,
     contents,
-    hendlerAddButton,
+    handlerResetTitle,
+    handlerResetContents,
     handlerTitleInput,
     handlerContentsInput,
 
@@ -31,9 +32,11 @@ function Header({
         contents,
         isDone: false,
     }
-    
+
     const HandlerAddTodo = ()=> {
         mutation.mutate(newUser)
+        handlerResetTitle()
+        handlerResetContents()
     }
 
     return (

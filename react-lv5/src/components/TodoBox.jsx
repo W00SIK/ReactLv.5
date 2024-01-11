@@ -1,16 +1,17 @@
 import React from 'react'
 import { useQuery } from 'react-query'
-import { getTodos } from '../apis/todos'
+import { changeTodos, getTodos } from '../apis/todos'
+import {useMutation, useQueryClient } from 'react-query'
+import { deletTodos } from '../apis/todos'
 
 function TodoBox({
     BoxMainWarkingArea,
-    user,
     BoxTodo,
     FontBoxTodoH1,
     FontBoxTodoH2,
     HendlerTodoButtonStyle,
     FontH3,
-    hendlerRemoveButton,
+    // hendlerRemoveButton,
     hendlerIsdoneState,
     navigate,
     FontH2,
@@ -20,15 +21,40 @@ function TodoBox({
 
 
 }) {
-
-
+    
     const {isLoading, isError, data } = useQuery("todos", getTodos)
+    
+    const queryClient = useQueryClient()
+
+    const mutationDelet = useMutation(deletTodos,{
+        onSuccess: () => {
+            queryClient.invalidateQueries("todos")
+            console.log("삭제!")
+        }
+    });
+
+    const mutationChange = useMutation(changeTodos,{
+        onSuccess: () => {
+            queryClient.invalidateQueries("todos")
+        }
+    });
 
     if (isLoading) {
         return <div>로딩중..</div>
     } 
     else if (isError) {
         return <div>오류!</div>
+    }
+    const HandlerDeletTodo = (id) => {
+        mutationDelet.mutate(id)
+    }
+    const HandlerChangeTodo = async(id, isDone) => {
+        console.log(id, isDone)
+        const result = await mutationChange.mutate({id, isDone})
+
+        if (result) {
+            console.log("바꿔")
+        }
     }
 
 
@@ -52,7 +78,7 @@ function TodoBox({
 
                                     <HendlerTodoButtonStyle
                                         onClick={() => {
-                                            hendlerRemoveButton(item.id)
+                                            HandlerDeletTodo(item.id)
                                         }}
                                     >
                                         <FontH3>삭제</FontH3>
@@ -62,7 +88,8 @@ function TodoBox({
                                             (<HendlerTodoButtonStyle>
                                                 <FontH3
                                                     onClick={() => {
-                                                        hendlerIsdoneState(item.id)
+                                                        // hendlerIsdoneState(item.id)
+                                                        HandlerChangeTodo(item.id, item.isDone)
                                                     }}
                                                 >완료</FontH3>
                                             </HendlerTodoButtonStyle>
@@ -108,7 +135,7 @@ function TodoBox({
 
                                     <HendlerTodoButtonStyle
                                         onClick={() => {
-                                            hendlerRemoveButton(item.id)
+                                            HandlerDeletTodo(item.id)
                                         }}
                                     >
                                         <FontH3>삭제</FontH3>
@@ -126,7 +153,7 @@ function TodoBox({
                                                 <HendlerTodoButtonStyle>
                                                     <FontH3
                                                     onClick={() => {
-                                                        hendlerIsdoneState(item.id)
+                                                        HandlerChangeTodo(item.id, item.isDone)
                                                     }}
                                                     >취소</FontH3>
                                                 </HendlerTodoButtonStyle>)

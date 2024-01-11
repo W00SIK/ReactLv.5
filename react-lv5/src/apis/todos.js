@@ -12,6 +12,16 @@ const addTodos = async (newUser) => {
 
 const deletTodos = async (id) => {
     const response = await api.delete(`/todo/${id}`)
+    return response.data
 }
 
-export {getTodos, addTodos, deletTodos}
+const changeTodos = async (state) => {
+    console.log(state.id, state.isDone)
+    const response = await api.patch(`/todo/${state.id}`,
+    {
+        isDone: state.isDone === false ? true: false
+    })
+    return response.data
+}
+
+export {getTodos, addTodos, deletTodos, changeTodos}
